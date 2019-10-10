@@ -16,6 +16,7 @@ from sklearn import preprocessing
 
 # In[2]:
 
+# reads csv files into dataframe for further processing
 right_df=pd.read_csv('properties_2016.csv',header=0)
 left_df=pd.read_csv('train_2016_v2.csv',header=0)
 left_df.head()
@@ -30,6 +31,7 @@ left_df.head()
 
 # In[4]:
 
+#merges the left and the right dataframes and forms a combined df 
 train_df=pd.merge(left_df,right_df,how='left',on='parcelid')
 train_df.head()
 
@@ -59,13 +61,14 @@ train_df.describe()
 
 missing_val_count=train_df.isnull().sum(axis=0).reset_index()
 missing_val_count.columns=['attribute','count']
+
 ind=np.arange(missing_val_count.shape[0])
 fig, ax = plt.subplots(figsize=(16,22))
 ax.barh(ind,missing_val_count['count'].values,color='green')
 ax.set_yticks(ind)
 ax.set_yticklabels(missing_val_count['attribute'].values)
 plt.show()
-
+plt.show()  # added a plot for better visualization
 
 # In[10]:1.5
 
@@ -106,66 +109,6 @@ new_grouped_df.shape
 new_grouped_df.head()
 
 
-# #life of property
-# # new_grouped_df['N-life'] = 2018 - new_grouped_df['yearbuilt']
-
-# #error in calculation of the finished living area of home
-# new_grouped_df['N-LivingAreaError'] = new_grouped_df['calculatedfinishedsquarefeet']/new_grouped_df['finishedsquarefeet12']
-
-# #proportion of living area
-# # new_grouped_df['N-LivingAreaProp'] = new_grouped_df['calculatedfinishedsquarefeet']/new_grouped_df['lotsizesquarefeet']
-
-
-# # #Amout of extra space
-# # new_grouped_df['N-ExtraSpace'] = new_grouped_df['lotsizesquarefeet'] - new_grouped_df['calculatedfinishedsquarefeet'] 
-
-
-# # #Total number of rooms
-# # new_grouped_df['N-TotalRooms'] = new_grouped_df['bathroomcnt']*new_grouped_df['bedroomcnt']
-
-# # #Average room size
-# # new_grouped_df['N-AvRoomSize'] = new_grouped_df['calculatedfinishedsquarefeet']/new_grouped_df['roomcnt'] 
-
-# # # Number of Extra rooms
-# # new_grouped_df['N-ExtraRooms'] = new_grouped_df['roomcnt'] - new_grouped_df['N-TotalRooms'] 
-
-# #Ratio of the built structure value to land area
-# new_grouped_df['N-ValueProp'] = new_grouped_df['structuretaxvaluedollarcnt']/new_grouped_df['landtaxvaluedollarcnt']
-
-# #Does property have a garage, pool or hot tub and AC?
-
-# new_grouped_df["N-location"] = new_grouped_df["latitude"] + new_grouped_df["longitude"]
-# new_grouped_df["N-location-2"] = new_grouped_df["latitude"]*new_grouped_df["longitude"]
-# # new_grouped_df["N-location-2round"] = new_grouped_df["N-location-2"].round(-4)
-
-# new_grouped_df["N-latitude-round"] = new_grouped_df["latitude"].round(-4)
-# new_grouped_df["N-longitude-round"] = new_grouped_df["longitude"].round(-4)
-
-# #############################################################################################################################
-
-# #Ratio of tax of property over parcel
-# new_grouped_df['N-ValueRatio'] = new_grouped_df['taxvaluedollarcnt']/new_grouped_df['taxamount']
-
-# #TotalTaxScore
-# new_grouped_df['N-TaxScore'] = new_grouped_df['taxvaluedollarcnt']*new_grouped_df['taxamount']
-
-
-# #############################################################################################################################
-
-# #location based features
-
-# zip_count = new_grouped_df['regionidzip'].value_counts().to_dict()
-# new_grouped_df['N-zip_count'] = new_grouped_df['regionidzip'].map(zip_count)
-
-# # #Number of properties in the city
-# # city_count = new_grouped_df['regionidcity'].value_counts().to_dict()
-# # new_grouped_df['N-city_count'] = new_grouped_df['regionidcity'].map(city_count)
-
-# # #Number of properties in the city
-# # region_count = new_grouped_df['regionidcounty'].value_counts().to_dict()
-# # new_grouped_df['N-county_count'] = new_grouped_df['regionidcounty'].map(city_count)
-
-# #############################################################################################################################
 
 
 new_grouped_df.shape
@@ -205,13 +148,7 @@ number_of_entries=new_test_df.shape[0]
 
 rem_col_names=missing_val_count[missing_val_count['count']>number_of_entries/1.5].attribute.values.tolist()
 
-# for f in train_df.columns: 
-#     if train_df[f].dtype=='object': 
-#         lbl = preprocessing.LabelEncoder() 
-#         lbl.fit(list(train_df[f].values)) 
-#         train_df[f] = lbl.transform(list(train_df[f].values))
 
-# new_test_df.drop(rem_col_names, axis=1,inplace=True)
 
 missing_val_count
 print('After getting train files2')
@@ -222,10 +159,7 @@ new_test_df.head(1)
 
 x_test=new_test_df.fillna(new_test_df.mean())
 x_test.shape
-# x_train.drop('N-county_count', axis=1,inplace=True)
-# x_train.head()
-# print 
-# x_test.head()
+
 
 print('After getting train files3')
 # In[9]:
