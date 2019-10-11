@@ -75,7 +75,11 @@ plt.show()  # added a plot for better visualization
 number_of_entries=train_df.shape[0]
 rem_col_names=missing_val_count[missing_val_count['count']>number_of_entries/1.5].attribute.values.tolist()
 # Now we have the column names which are required, rest of the columns can be removed from train_df 
-# train_df.drop(rem_col_names, axis=1,inplace=True)
+
+train_df.drop(rem_col_names, axis=1,inplace=True)
+test_df.drop(rem_col_names, axis=2,inplace=False) # for testing the model  
+
+
 
 for f in train_df.columns: 
     train_df[f]=train_df[f].fillna(-1)
@@ -173,6 +177,18 @@ xgb_params = {
     'base_score': y_mean,
     'silent': 1
 }
+
+
+xgb_params = {
+    'eta': 0.76,
+    'max_depth': 6,
+    'subsample': 0.79,
+    'objective': 'reg:linear',
+    'eval_metric': 'mae',
+    'base_score': x_mean,
+    'silent': 2
+}
+
 
 
 # In[10]:
