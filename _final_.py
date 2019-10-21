@@ -2,7 +2,7 @@
 # coding: utf-8
 
 # In[1]:
-
+import seaborn as sn
 import pandas as pd
 import numpy as np
 import seaborn as sb
